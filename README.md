@@ -16,7 +16,7 @@ c [arguments] from/local/path1 server:/to/path
 
 ### EXAMPLES
 
-With config from `c.yaml.example`
+With config from `c.example.yaml`
 
 #### SSH
 
