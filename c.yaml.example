@@ -1,0 +1,30 @@
+# put config file into $HOME/.c.yaml
+
+# default username, will use current username if not set
+user: iam
+
+# aliases for ssh flags
+flags:
+    # allow edit remote files with local Sublime Text:
+    # https://github.com/aurora/rmate & https://sublime.wbond.net/packages/rsub
+    rmate: -R52698:127.0.0.1:52698
+
+# list of SSH servers
+# shortcut  [user@]address  flags
+ssh:
+    # connect with default user name
+    radius: radius.example.com
+
+    # use other user name
+    voip: asterisk@voip.example.com
+
+    # several aliases could be separated with space
+    db mysql: db.example.com
+
+    # pass additional flags
+    gw: gw.example.com :rmate -A -p 22000
+
+# list of Telnet servers
+# shortcut  address
+telnet:
+    router: router.example.com
