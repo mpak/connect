@@ -4,7 +4,7 @@ use warnings;
 use YAML::Tiny qw(LoadFile);
 use List::Util qw(first);
 
-our $VERSION = '0.004';
+our $VERSION = '0.005';
 
 
 my $config = load_config("$ENV{HOME}/.c.yaml");
@@ -83,6 +83,11 @@ sub parse_command_line {
 	if ($opt{show_cmd}) {
 		print "@cmd\n";
 		exit 0;
+	} elsif ($opt{show_host}) {
+		my $host = pop @paths;
+		$host =~ s/.*@//;
+		print "$host\n";
+		exit 0;
 	}
 
 	return @cmd;
@@ -125,6 +130,7 @@ sub separate_flags_and_paths {
 			push @paths, $arg;
 		}
 	}
+	$opt{show_host} = (@paths == 1 && $paths[0] =~ s/\^$//);
 	return (\@flags, \@paths, %opt);
 }
 
