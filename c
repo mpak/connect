@@ -4,7 +4,7 @@ use warnings;
 use YAML::Tiny qw(LoadFile);
 use List::Util qw(first);
 
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 
 my $config = load_config("$ENV{HOME}/.c.yaml");
@@ -83,10 +83,17 @@ sub parse_command_line {
 	if ($opt{show_cmd}) {
 		print "@cmd\n";
 		exit 0;
-	} elsif ($opt{show_host}) {
+	} elsif ($opt{command}) {
 		my $host = pop @paths;
 		$host =~ s/.*@//;
-		print "$host\n";
+		if ($opt{command} eq 'show_host') {
+			print "$host\n";
+		} elsif ($opt{command} eq 'ping') {
+			exec { 'ping' } 'ping', $host;
+		} else {
+			warn "Unknown command: $opt{command}\n";
+			exit 1;
+		}
 		exit 0;
 	}
 
@@ -130,7 +137,9 @@ sub separate_flags_and_paths {
 			push @paths, $arg;
 		}
 	}
-	$opt{show_host} = (@paths == 1 && $paths[0] =~ s/\^$//);
+	if (@paths == 1 && $paths[0] =~ s/\^([a-z]+)?$//) {
+		$opt{command} = $1 || 'show_host';
+	}
 	return (\@flags, \@paths, %opt);
 }
 
@@ -147,6 +156,11 @@ $0 [args] src_path1 [src_path2...] dst_path
 
 $0 -h ...
 	show full command and exit
+
+$0 server^[COMMAND]
+	do some action with server address
+	If command is omitted just print host
+	Possible commands: ping
 
 END_USAGE
 }

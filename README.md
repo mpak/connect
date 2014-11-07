@@ -16,6 +16,8 @@ c [arguments] from/local/path1 server:/to/path
 c -h server
 # show only host (for usage in scripts)
 c server^
+# ping host
+c server^ping
 ```
 
 ### EXAMPLES
@@ -59,6 +61,8 @@ c gw -h
 # output: ssh -R52698:127.0.0.1:52698 -A -p 22000 iam@gw.example.com
 c voip^
 # output: voip.example.com
+c voip^ping
+# ping that host
 ```
 
 
@@ -69,6 +73,10 @@ Copy `c` script somewhere in `$PATH` and create `.c.yaml` in `$HOME` directory.
 Then install required perl module with command `cpan YAML::Tiny`
 
 ### Changes
+
+* 2014-11-07 - v0.006
+
+    extend ^ syntax with ping command
 
 * 2014-08-14 - v0.005
 
